@@ -7,9 +7,5 @@
     <li>Compute a determinant of the matrix.</li>
     <li>Compute solution of a linear system.</li>
     <li>Compute residuals of a linear system.</li>
-    <ol>
-      Optionals:
-      <li>Auto generate random matrix.</li>
-    </ol>
   </ol>
   
