@@ -20,16 +20,13 @@ public class GaussMatrixImpl implements GaussMatrix {
         Scanner sc = new Scanner(System.in);
         try {
             switch (streamOpt) {
-                case FILE:
+                case FILE -> {
                     System.out.print("> Please enter your file's name: ");
                     File file = new File(sc.next());
                     sc = new Scanner(file);
-                    break;
-                case CLI:
-                    System.out.println("> Please enter your matrix: ");
-                    break;
-                default:
-                    throw new UnexpectedException("Can not parse input option");
+                }
+                case CLI -> System.out.println("> Please enter your matrix: ");
+                default -> throw new UnexpectedException("Can not parse input option");
             }
         } catch (FileNotFoundException e) {
             System.out.println("> File not found.");
@@ -73,8 +70,8 @@ public class GaussMatrixImpl implements GaussMatrix {
         int pivotCol = 0, pivotRow = 0;
         while (pivotCol < this.size && pivotRow < this.size) {
             int i = pivotRow;
-            for(; i < this.size; ++i) if (!matrix[i][pivotCol].equals(0)) break;
-            if (matrix[i][pivotCol].equals(0)) {
+            for(; i < this.size; ++i) if (matrix[i][pivotCol].compareTo(BigDecimal.ZERO) != 0) break;
+            if (matrix[i][pivotCol].compareTo(BigDecimal.ZERO) == 0) {
                 pivotCol ++;
                 continue;
             }
@@ -102,10 +99,9 @@ public class GaussMatrixImpl implements GaussMatrix {
 
     @Override
     public List<BigDecimal> computeSol() {
-        BigDecimal[][] matrix = toTriangular();
         List<BigDecimal> solution = new ArrayList<>();
         for(int i = this.size - 1; i >= 0; --i) {
-            if (matrix[i][i].equals(0)) return null;
+            if (matrix[i][i].compareTo(BigDecimal.ZERO) == 0) return null;
             BigDecimal tot = matrix[i][this.size];
             for(int col = this.size - 1; col > i; --col)
                 tot = tot.subtract(solution.get(this.size - 1 - col).multiply(matrix[i][col]));
