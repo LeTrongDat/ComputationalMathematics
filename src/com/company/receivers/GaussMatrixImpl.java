@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class GaussMatrixImpl implements GaussMatrix {
     private int size;
     private BigDecimal[][] matrix;
+    private BigDecimal det;
 
     @Override
     public void read(StreamOption streamOpt) {
@@ -67,7 +68,9 @@ public class GaussMatrixImpl implements GaussMatrix {
     @Override
     public BigDecimal[][] toTriangular() {
         BigDecimal[][] matrix = this.matrix;
+        int swapCount = 0;
         int pivotCol = 0, pivotRow = 0;
+        this.det = BigDecimal.ONE;
         while (pivotCol < this.size && pivotRow < this.size) {
             int i = pivotRow;
             for(; i < this.size; ++i) if (matrix[i][pivotCol].compareTo(BigDecimal.ZERO) != 0) break;
@@ -76,6 +79,8 @@ public class GaussMatrixImpl implements GaussMatrix {
                 continue;
             }
             swapRow(pivotRow, i);
+            this.det = this.det.multiply(matrix[pivotRow][pivotCol]);
+            swapCount = 1 - swapCount;
             for(int row = pivotRow + 1; row < this.size; ++row) {
                 BigDecimal coefficient = matrix[row][pivotCol].divide(matrix[pivotRow][pivotCol], 3, RoundingMode.HALF_UP);
                 matrix[row][pivotCol] = BigDecimal.ZERO;
@@ -85,21 +90,21 @@ public class GaussMatrixImpl implements GaussMatrix {
             pivotRow ++;
             pivotCol ++;
         }
+        this.det = this.det
+                .multiply(swapCount == 0 ? BigDecimal.ONE : BigDecimal.valueOf(-1))
+                .setScale(3, RoundingMode.HALF_UP);
         return this.matrix;
     }
 
     @Override
     public BigDecimal computeDet() {
-        BigDecimal[][] matrix = toTriangular();
-        BigDecimal det = new BigDecimal(1);
-        for(int i = 0; i < this.size; ++i)
-            det = det.multiply(matrix[i][i]);
-        return det.setScale(3, RoundingMode.HALF_UP);
+        return this.det;
     }
 
     @Override
     public List<BigDecimal> computeSol() {
         List<BigDecimal> solution = new ArrayList<>();
+        BigDecimal[][] matrix = toTriangular();
         for(int i = this.size - 1; i >= 0; --i) {
             if (matrix[i][i].compareTo(BigDecimal.ZERO) == 0) return null;
             BigDecimal tot = matrix[i][this.size];
