@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +16,8 @@ public class GaussMatrixImpl implements GaussMatrix {
     private int size;
     private BigDecimal[][] matrix;
     private BigDecimal det;
+    private final int COMPUTATIONAL_SCALE = 20; // Error when performing calculation
+    private final int RESULT_SCALE = 3; // Error when printing out the result
 
     @Override
     public void read(StreamOption streamOpt) {
@@ -52,12 +55,12 @@ public class GaussMatrixImpl implements GaussMatrix {
     }
 
     @Override
-    public void seedMatrix() {
-        this.size = (int)Math.round(Math.random() * 19 + 1);
+    public void seedMatrix(int n) {
+        this.size = n;
         this.matrix = new BigDecimal[this.size][this.size+1];
         for(int row = 0; row < this.size; ++row)
             for(int col = 0; col < this.size + 1; ++col)
-                this.matrix[row][col] = BigDecimal.valueOf(Math.random() * 1e3).setScale(3, RoundingMode.HALF_UP);
+                this.matrix[row][col] = BigDecimal.valueOf(Math.random() * 1e3).setScale(RESULT_SCALE, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -82,17 +85,17 @@ public class GaussMatrixImpl implements GaussMatrix {
             this.det = this.det.multiply(matrix[pivotRow][pivotCol]);
             swapCount = 1 - swapCount;
             for(int row = pivotRow + 1; row < this.size; ++row) {
-                BigDecimal coefficient = matrix[row][pivotCol].divide(matrix[pivotRow][pivotCol], 3, RoundingMode.HALF_UP);
+                BigDecimal coefficient = matrix[row][pivotCol].divide(matrix[pivotRow][pivotCol], COMPUTATIONAL_SCALE, RoundingMode.HALF_UP);
                 matrix[row][pivotCol] = BigDecimal.ZERO;
                 for(int col = pivotCol + 1; col < this.size + 1; ++col)
-                    matrix[row][col] = matrix[row][col].subtract(matrix[pivotRow][col].multiply(coefficient)).setScale(3, RoundingMode.HALF_UP);
+                    matrix[row][col] = matrix[row][col].subtract(matrix[pivotRow][col].multiply(coefficient)).setScale(COMPUTATIONAL_SCALE, RoundingMode.HALF_UP);
             }
             pivotRow ++;
             pivotCol ++;
         }
         this.det = this.det
                 .multiply(swapCount == 0 ? BigDecimal.ONE : BigDecimal.valueOf(-1))
-                .setScale(3, RoundingMode.HALF_UP);
+                .setScale(RESULT_SCALE, RoundingMode.HALF_UP);
         return this.matrix;
     }
 
@@ -110,8 +113,9 @@ public class GaussMatrixImpl implements GaussMatrix {
             BigDecimal tot = matrix[i][this.size];
             for(int col = this.size - 1; col > i; --col)
                 tot = tot.subtract(solution.get(this.size - 1 - col).multiply(matrix[i][col]));
-            solution.add(tot.divide(matrix[i][i], 3, RoundingMode.HALF_UP));
+            solution.add(tot.divide(matrix[i][i], RESULT_SCALE, RoundingMode.HALF_UP));
         }
+        Collections.reverse(solution);
         return solution;
     }
 
@@ -124,7 +128,7 @@ public class GaussMatrixImpl implements GaussMatrix {
             BigDecimal tot = new BigDecimal(0);
             for(int col = 0; col < this.size; ++col)
                 tot = tot.add(solution.get(col).multiply(matrix[row][col]));
-            residual.add(matrix[row][this.size].subtract(tot).abs().setScale(3, RoundingMode.HALF_UP));
+            residual.add(matrix[row][this.size].subtract(tot).abs().setScale(RESULT_SCALE, RoundingMode.HALF_UP));
         }
         return residual;
     }

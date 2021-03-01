@@ -24,7 +24,7 @@ public interface GaussMatrix {
     /**
      * Generate random matrix
      */
-    void seedMatrix();
+    void seedMatrix(int n);
 
     /**
      * @return original matrix

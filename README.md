@@ -8,4 +8,10 @@
     <li>Compute solution of a linear system.</li>
     <li>Compute residuals of a linear system.</li>
   </ol>
+  <h2>Options</h2>
+    <ol>
+        <li>-h: Print app command line options</li>
+        <li>-o: Read matrix from file</li>
+        <li>-r: Auto generate random matrix</li>
+    </ol>
   

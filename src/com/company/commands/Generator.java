@@ -2,6 +2,8 @@ package com.company.commands;
 
 import com.company.receivers.GaussMatrix;
 
+import java.util.Scanner;
+
 public class Generator implements Command {
     private GaussMatrix matrix;
     public Generator(GaussMatrix matrix) {
@@ -10,6 +12,8 @@ public class Generator implements Command {
 
     @Override
     public void execute() {
-        this.matrix.seedMatrix();
+        System.out.print("Please enter the size of random matrix: ");
+        Scanner sc = new Scanner(System.in);
+        this.matrix.seedMatrix(sc.nextInt());
     }
 }
