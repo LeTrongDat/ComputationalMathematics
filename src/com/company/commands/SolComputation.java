@@ -13,6 +13,10 @@ public class SolComputation implements Command {
     @Override
     public void execute() {
         List<BigDecimal> solution = this.matrix.computeSol();
+        if (solution == null) {
+            System.out.println("> The linear system hasn't any solutions or has infinite solutions");
+            System.exit(0);
+        }
         System.out.println("> A solution of the linear system is: " + solution.toString());
     }
 }

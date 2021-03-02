@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class GaussMatrixImpl implements GaussMatrix {
     private int size;
     private BigDecimal[][] matrix;
-    private BigDecimal det;
+    private BigDecimal det = new BigDecimal(0);
     private final int COMPUTATIONAL_SCALE = 20; // Error when performing calculation
     private final int RESULT_SCALE = 3; // Error when printing out the result
 
@@ -77,7 +77,7 @@ public class GaussMatrixImpl implements GaussMatrix {
         while (pivotCol < this.size && pivotRow < this.size) {
             int i = pivotRow;
             for(; i < this.size; ++i) if (matrix[i][pivotCol].compareTo(BigDecimal.ZERO) != 0) break;
-            if (matrix[i][pivotCol].compareTo(BigDecimal.ZERO) == 0) {
+            if (i >= this.size) {
                 pivotCol ++;
                 continue;
             }
@@ -93,9 +93,10 @@ public class GaussMatrixImpl implements GaussMatrix {
             pivotRow ++;
             pivotCol ++;
         }
+        for(int i = 0; i < this.size; ++i)
+            this.det = this.det.multiply(matrix[i][i]);
         this.det = this.det
-                .multiply(swapCount == 0 ? BigDecimal.ONE : BigDecimal.valueOf(-1))
-                .setScale(RESULT_SCALE, RoundingMode.HALF_UP);
+                .multiply(swapCount == 0 ? BigDecimal.ONE : BigDecimal.valueOf(-1));
         return this.matrix;
     }
 
