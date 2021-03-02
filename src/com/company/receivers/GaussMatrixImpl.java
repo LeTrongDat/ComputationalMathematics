@@ -82,7 +82,6 @@ public class GaussMatrixImpl implements GaussMatrix {
                 continue;
             }
             swapRow(pivotRow, i);
-            this.det = this.det.multiply(matrix[pivotRow][pivotCol]);
             swapCount = 1 - swapCount;
             for(int row = pivotRow + 1; row < this.size; ++row) {
                 BigDecimal coefficient = matrix[row][pivotCol].divide(matrix[pivotRow][pivotCol], COMPUTATIONAL_SCALE, RoundingMode.HALF_UP);
