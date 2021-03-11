@@ -11,9 +11,9 @@
   - Column of residuals
 ## Options
 
-  [-h]          List all options of this app.
-  [-o]          Read matrix from file.
-  [-r]          Auto generate random matrix with randome size (size >= 0)
+    [-h]          List all options of this app.
+    [-o]          Read matrix from file.
+    [-r]          Auto generate random matrix with randome size (size >= 0)
      
       
   
