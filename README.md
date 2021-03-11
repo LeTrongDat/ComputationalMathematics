@@ -1,5 +1,6 @@
 <h1>Gauss Elimination App </h1>
   <h2>Introduction</h2>
+  
     1. Dimension n <= 20 (set from a file or from the keyboard - at the choice of the end user)
 
     2. It should be provided for reading the initial data both from a file and entering from the keyboard.
