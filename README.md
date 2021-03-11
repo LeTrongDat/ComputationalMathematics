@@ -9,13 +9,13 @@
 
     4. Mandatory: Test data on a large matrix (5 * 5/6 * 6 ...) + in the report with the decision
 
-      1. Calculation of the determinant
+      - Calculation of the determinant
 
-      2. Inference of a triangular matrix (including transformed column B)
+      - Inference of a triangular matrix (including transformed column B)
 
-      3. Column of unknowns
+      - Column of unknowns
 
-      4. Column of residuals
+      - Column of residuals
   <h2>Usage</h2>
   <ol>
     <li>Transform an original matrix to triangular form.</li>
