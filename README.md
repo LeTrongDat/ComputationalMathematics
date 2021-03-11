@@ -1,5 +1,5 @@
-<h1>Gauss Elimination App </h1>
-  <h2>Introduction</h2>
+# Gauss elimination
+  ## Introduction
   
     1. Dimension n <= 20 (set from a file or from the keyboard - at the choice of the end user)
 
@@ -16,17 +16,9 @@
       - Column of unknowns
 
       - Column of residuals
-  <h2>Usage</h2>
-  <ol>
-    <li>Transform an original matrix to triangular form.</li>
-    <li>Compute a determinant of the matrix.</li>
-    <li>Compute solution of a linear system.</li>
-    <li>Compute residuals of a linear system.</li>
-  </ol>
-  <h2>Options</h2>
-    <ol>
-        <li>-h: Print app command line options</li>
-        <li>-o: Read matrix from file</li>
-        <li>-r: Auto generate random matrix</li>
-    </ol>
+  ## Options
+      
+      [-h]          List all options of this app.
+      [-o]          Read matrix from file 
+      [-r]          Auto generate random matrix with randome size (size \geq 0)
   
